@@ -49,7 +49,7 @@ Here is the picture for a basic package structure:
 **absolute imports**: usually it describe the way that import the module from the package with the full path.
 **relative imports**: use a relative path to modules *in the same package*.
 
-### the function of "__all__"
+### the function of "\__all__\"
 when trying to import the module in this way:
 ```python
 from foo import *
