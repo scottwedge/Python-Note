@@ -18,3 +18,25 @@ Python中的函数是一级对象。这意味着Python中的函数的引用可�
 来源：CSDN 
 原文：https://blog.csdn.net/Yaokai_AssultMaster/article/details/70256621 
 版权声明：本文为博主原创文章，转载请附上博文链接！
+
+# callable classes
+the callable classes will always followed with "()", we can define the class as "Tuple" or "list"
+
+# Conditionals
+
+the **conditional expression** can be felxible, for example:
+```python
+
+if condition:
+    result = true_value
+else
+    result = false_value
+
+# the statement can also be written as:
+
+result = true_value if condition else false_value
+
+```
+
+# Lambdas
+lambdas will change the value to the callable function, need use "()" to use the new lambdas function.
