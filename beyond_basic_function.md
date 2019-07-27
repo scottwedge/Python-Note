@@ -39,4 +39,79 @@ result = true_value if condition else false_value
 ```
 
 # Lambdas
-lambdas will change the value to the callable function, need use "()" to use the new lambdas function.
+lambdas will change the value to the **callable function**, need use "()" to use the new lambdas function.
+for example:
+```python
+>>>last_name = lambda name: name.split()[-1]
+>>>last_name
+<function <lambda> at 0x01C00858>
+```
+![lambda](./images/lambda.png)
+
+# Detecting callable objects
+objects that can be callable includes: **def fucntion**, **lambda**, **methods**, **calss objects**. **class object with duderable method**
+
+for example:
+```python
+>>>def is_even(x):
+...    return x%2 == 0
+>>>callable(is_even)
+True
+>>>is_odd = lambda x:x%2 == 1
+>>>callable(is_odd)
+True
+>>>callable(list)
+True
+>>>callable(list.append)
+True
+>>>class callme:
+...    def __call__(self):
+...        print("Call me")
+>>>call_me = callme()
+>>>callable(call_me)
+True
+```
+
+# extended formal argument syntax
+the use of *args means the input is necessary in the def function:
+```python
+>>>def hypervolume(*args):
+...    print(args)
+...    print(type(args))
+...
+>>> hypervolume(3, 4)
+(3, 4)
+<class 'tuple'>
+```
+when you need the parameter in the fucntion, considering using the required parameters arguments, the *arg:
+```python
+>>>def hypervolume(length, *length):
+```
+the * length means there must be one argument in the fuction when you trying to call it.
+
+**kwargs** will let the fuction accept the varitent, and give it a tag. the tag can be **callable** in the fuction.
+for example:
+```python
+>>> def tag(name, **kwargs):
+...     print(name)
+...     print(kwargs)  
+...     print(type(kwargs))
+...
+>>> tag('img', src= "monet.jpg", alt = "asdfqerr", border = 1)
+img
+{'src': 'monet.jpg', 'alt': 'asdfqerr', 'border': 1}
+<class 'dict'>
+```
+the argument is existed in dictionary and can be called using dictionary method:
+```python
+>>> def tag(name, **attributes):
+...     result = '<' + name 
+...     for key, value in attributes.items():
+...             result += ' {k} = "{v}"'.format(k = key, v = str(value))
+...     result += '>'
+...     return result
+... 
+>>> tag('img', scr = "hahahaha", alt = "fdadfadsf", border = 1) 
+'<img scr = "hahahaha" alt = "fdadfadsf" border = "1">'
+```
+the **extended formal argument syntax** can be apply equally to retular functions, lambda, and other callables.
