@@ -78,5 +78,57 @@ def raise_to(exp):
 81
 ```
 see that is so amazon!!!!!
-## the nonlocal keyword
+# the nonlocal keyword
 
+the LEGB does not apply to the new name binding, for example:
+```python
+message = "global"
+def enclosing():
+    message = "enclosing"
+    def local()"
+        message = "local"
+    print("enclosing message:", message)
+    local()
+    print("enclosing message:", message)
+
+print("global message:", message)
+# this step will bind the value local
+enclosing() 
+print("global message:", message)
+```
+here is the result, and the value in the local function can not replace the global and enclosing varity :(
+![result](./images/nonlocal_result.png)
+
+* using the **global** can let the local function change the value.
+* using the **nonlocal** can introduce names from the enclosing namespace into the local namespace
+* if the name doesn't exist the SyntaxError will be raised
+
+# decorators
+1. modify or enhance functions without changing their definition
+, the decorators **implemented as callables** that take and return other **callables**
+2. the decorator was used the "@ in front of the function, for example:
+
+```python
+@my_decorator
+def my_funciton():
+...
+```
+
+## the use of the decorators:
+here is an example of transfer letter into ASC2:
+```python
+def escape_unicode(f):
+    def warp(*args, **kwargs):
+        x = f(*args, **kwargs)
+        return ascii(x)
+    
+    return warp
+
+@escape_uniclde(f):
+def china_city():
+    return "中国“
+```
+the process of the decorators function:
+![decorators_1](images/decorator_1.png)
+![decorators_2](images/decorator_2.png)
+![decorators_3](images/decorator_3.png)
