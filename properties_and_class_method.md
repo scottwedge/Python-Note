@@ -1,3 +1,10 @@
+- [class attributes and instance attributes](#class-attributes-and-instance-attributes)
+- [static method: using the @staticmethod decorator](#static-method-using-the-staticmethod-decorator)
+- [class methods](#class-methods)
+- [properties](#properties)
+- [the difference between the @staticmethod and @classmethod](#the-difference-between-the-staticmethod-and-classmethod)
+
+
 # class attributes and instance attributes
 
 the class attibutes need get a full name if you want to call in in the method, for example:
@@ -125,3 +132,6 @@ here is something new book:
 **design pattern-elements of reusable object-oriented software**
 writen by Eric gamma
 
+
+# the difference between the @staticmethod and @classmethod
+please check my evernote :D
