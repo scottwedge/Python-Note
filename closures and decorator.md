@@ -244,3 +244,4 @@ ValueError: argument 1 must be non-nagative.
 ```
 
 the decorator can be also be modified and take the argument as a extend function :D
+
