@@ -96,3 +96,11 @@ the complex also can be used to numerical a diagram:
 
 ## built-in numeric function abs()
 this function can give the distance from "0"
+
+## datetime module
+![datetime_module](images/datetime&#32;module.png)
+how to string format the time:
+```python
+d.strftime('')
+```
+![strftime](images/strftime.png)
