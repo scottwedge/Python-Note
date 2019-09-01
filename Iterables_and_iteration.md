@@ -259,4 +259,56 @@ class exampleIterable:
 ```
 
 ## Alternative iterable protocol
-the alternative iterable protocol works with any object that supports consecutive integer indexing via \_\_getitem\_\_()
+the alternative iterable protocol works with any object that supports consecutive integer indexing via \_\_getitem\_\_().
+
+this function works alternataviely when there is a indexerror
+
+## extended iter()
+ the inter function can do extension:
+ ```python
+ iter(callable, sentinel)
+ # the callable takes zero arguments, and the iterations stops when callable produces the value "sentinel"
+
+# for example:
+import datetime
+i = iter(datetime.datetime.now, None)
+>>> i
+<callable_iterator object at 0x03680950>
+>>> next(i) 
+datetime.datetime(2019, 9, 1, 14, 20, 0, 75352)
+```
+## real world iterables-sensor data
+
+for example:
+```python
+import random
+import itertools
+import time
+class Sensor:
+    def __iter__(self):
+        return self
+    def __next__(self):
+        return random.random()
+    
+sensor = Sensor()
+timestamps = iter(datetime.datetime.now, None)
+for stamp, value in itertools.islice(zip(timestamps, sensor), 10):
+    print(stamp, value)
+    time.sleep(1)
+#result within 10 steps
+2019-09-01 14:30:06.885465 0.059485365915706856
+2019-09-01 14:30:07.891513 0.4135515386941542
+2019-09-01 14:30:08.891652 0.5213297293689312
+2019-09-01 14:30:09.891989 0.7936012082645583
+2019-09-01 14:30:10.893413 0.5109975505180298
+2019-09-01 14:30:11.907756 0.1461820744095632
+2019-09-01 14:30:12.910465 0.4642424407559891
+2019-09-01 14:30:13.922377 0.37215577915184606
+2019-09-01 14:30:14.922630 0.33441974342715597
+2019-09-01 14:30:15.937842 0.5672468233740667
+>>> 
+```
+## summary
+![summary](images/iterable_summary.png)
+![summary_2](images/iterable_summary_2.png)
+
