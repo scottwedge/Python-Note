@@ -1,3 +1,14 @@
+- [iterables and iteration](#iterables-and-iteration)
+  - [multi-input comprehensions](#multi-input-comprehensions)
+  - [comprehensions can be nested inside other comprehensions](#comprehensions-can-be-nested-inside-other-comprehensions)
+  - [the map() function](#the-map-function)
+    - [map() can accept any number of input sequences](#map-can-accept-any-number-of-input-sequences)
+- [the filter funciton is as lazy as mapping](#the-filter-funciton-is-as-lazy-as-mapping)
+- [creat an interator](#creat-an-interator)
+- [get next element in sequence](#get-next-element-in-sequence)
+- [here it is :D](#here-it-is-d)
+  - [real world iterables-sensor data](#real-world-iterables-sensor-data)
+  - [summary](#summary)
 # iterables and iteration
 ## multi-input comprehensions
 what is the comprehensions?

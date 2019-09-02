@@ -1,3 +1,8 @@
+- [callable classes](#callable-classes)
+- [Conditionals](#conditionals)
+- [Lambdas](#lambdas)
+- [Detecting callable objects](#detecting-callable-objects)
+- [extended formal argument syntax](#extended-formal-argument-syntax)
  # "\_\_call_\_\" special method
 在Python的class中有一些函数往往具有特殊的意义。__init__()和__call__()就是class很有用的两类特殊的函数。
 

@@ -1,4 +1,10 @@
 
+- [Reviewing int and float](#reviewing-int-and-float)
+  - [the decimal module and the decimal type](#the-decimal-module-and-the-decimal-type)
+  - [the fraction module and the Fraction class](#the-fraction-module-and-the-fraction-class)
+  - [another numerical type: complex](#another-numerical-type-complex)
+  - [built-in numeric function abs()](#built-in-numeric-function-abs)
+  - [datetime module](#datetime-module)
 # Reviewing int and float
 the different among:
 int, float 
