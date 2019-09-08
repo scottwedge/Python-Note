@@ -110,3 +110,7 @@ how to string format the time:
 d.strftime('')
 ```
 ![strftime](images/strftime.png)
+
+# Summary of the Numeric and scalar type
+
+![Summary_numeric_scalar](images/numeric_scalar.png)
