@@ -36,3 +36,6 @@ r = reversed(seq)
 sets 支持 x in set, len(set),和 for x in set。作为一个无序的集合，sets不记录元素位置或者插入点。因此，sets不支持 indexing, slicing, 或其它类序列（sequence-like）的操作。
 
 ## collection construction
+what is the sortedSet?
+
+A collection which is a sized, iterable, sequence, container of a set of distnct items and constructible from an iterable.
