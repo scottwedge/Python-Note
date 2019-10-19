@@ -161,3 +161,11 @@ Traceback (most recent call last):
 AssertionError: This condition is False
 ```
 ### class invariants
+the assertion can be used with the return of the function, an the returned value must me True or False, for example:
+```python
+class test(Object):
+    def is_true(self):
+        all(self[i] < self[i+1] for i in range (len(self)-1))
+        #the all function will return the bool value if the interable element is True (not none, 0, False)
+    assert self.is_true()
+```
