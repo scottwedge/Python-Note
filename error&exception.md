@@ -120,4 +120,44 @@ except InclinationError as e:
 ```
 #
 ## Tracebacks
+use the **\_\_traceback\_\_** for detail error message, for example:
 
+```python
+import math
+import traceback
+
+def inclination(dx, dy):
+    try:
+        return math.degrees(math.atan(dy/dx))
+    except ZeroDivisionError  as e:
+        raise InclinationError("Slope can not be vertical") from e
+def main():
+    try:
+        inclination(0, 5)
+    except InclinationError as e:
+        print(e)
+        print(e.__traceback__)
+#traceback need to be called using traceback.print_tb()
+        traceback.print_tb(e.__traceback__)
+#prefer to render  the __traceback__ to a string using the format, for example:
+        s = traceback.format_tb(e.__traceback__)
+        print(s)
+if __name__ = '__main__':
+    main()
+    print("Finished")
+```
+![traceback](./images/traceback.png)
+#
+## checking invariants with **Assertions**
+### internal invariants
+the useage of the **assertions** is:
+```python
+assert condition [,message]
+# if the condition is False, then the AssertionError will be called and message will be printed 
+#for example:
+assert False, "This condition is False"
+Traceback (most recent call last):     
+  File "<stdin>", line 1, in <module>  
+AssertionError: This condition is False
+```
+### class invariants
