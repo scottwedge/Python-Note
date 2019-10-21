@@ -169,3 +169,16 @@ class test(Object):
         #the all function will return the bool value if the interable element is True (not none, 0, False)
     assert self.is_true()
 ```
+### performance assertions
+the overall assertions can be deactivated using the " -o" option, for example:
+```powershell
+py -o ...
+```
+
+![assertion_deactivated](./images/assertion_deactivated.png)
+#
+## Summary
+1. don't use the aasertion to check the argument
+2. don't be too general when specify an exception type with except
+
+![summary_error&excpetion](./images/error_exception_summary.png)
