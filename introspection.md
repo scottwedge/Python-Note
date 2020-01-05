@@ -226,3 +226,7 @@ Traceback (most recent call last):
 ```
 PS: [wraps decorator 的作用](https://blog.csdn.net/hqzxsc2006/article/details/50337865)
 综上，没有额外在装饰器参数中指明所需要检查类型，直接利用python自省的特性和inspect获取到函数的参数和类型要求，完成强制类型检查。
+
+# Summary
+
+![introspection](./images/introspection.png)
