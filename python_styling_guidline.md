@@ -41,9 +41,9 @@ Documentation:
 
 ## three tool for pep8 style
 
-* pylint: check the name and style
-* pycodestyle: focus on style
-* Black: auto correct
+* **pylint**: check the name and style
+* **pycodestyle**: focus on style
+* **Black**: auto correct
 
 ``the pylint can check variable name and more than pycharm can do``
 
