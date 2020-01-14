@@ -54,7 +54,7 @@ pip help list
 pip show packagename
 ```
 
-check the **pypi** for more package :D
+check the **[pypi](https://pypi.org/)** for more package :D
 
 ### where are packages installed?
 
@@ -77,7 +77,7 @@ python2 -m pip install flask
 #instead of just using pip
 ```
 
-**it's all depend on the system configure!!**
+``it's all depend on the system configure!!``
 
 ## Virtual environments-Projects and dependencies
 
