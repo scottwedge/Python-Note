@@ -56,7 +56,7 @@ pip show packagename
 
 check the **[pypi](https://pypi.org/)** for more package :D
 
-### where are packages installed?
+### where are packages installed
 
 * the sys.path variable
 * installing for other python version
@@ -80,6 +80,46 @@ python2 -m pip install flask
 ``it's all depend on the system configure!!``
 
 ## Virtual environments-Projects and dependencies
+
+when on multiple project with confilctin dependencies, conflicts with system dependencies, multi-user systems, testing code against different python and library versions.
+
+the env could isolate context package and remember:
+
+* always work inside a virtual env.
+* creat a virtual env for every project.
+
+### install the env
+
+```python
+# install the env
+python -m pip install virtualenv
+#run the env
+virtualenv projectname
+#using typical python version
+virtualenv -p python3 projectname
+```
+
+### activate the env
+
+```powershell
+# activate the env (in the project env folder)
+activate.bat
+# the new package would be installed in the env folder
+pip list
+```
+
+### how to sync the package among the team
+
+```bash
+# creat requirement file
+python -m pip freeze > requirement.txt
+# install the requirement
+python -m pip install -r requirement.txt
+```
+
+![env](./images/env.png)
+
+`the using of vox can help to test package under different version of Python`
 
 ## Virtualenvwrapper-making venv more convenient
 
