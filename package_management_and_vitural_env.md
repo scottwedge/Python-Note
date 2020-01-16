@@ -148,3 +148,15 @@ pip install virtualenvwrapper-win
 ```
 
 ## Other tools
+
+* the Python packaging authority
+  * here is the [link](Http://pypa.io)
+![tools](./images/tools.png)
+* anaconda: http://www.anaconda.com
+  * python distribution
+  * package manager
+  * instsaller
+  * env tool
+  * aimed at Data Science
+
+![tools](./images/tools-2.png)
