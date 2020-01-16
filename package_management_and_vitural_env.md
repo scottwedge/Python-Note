@@ -123,4 +123,28 @@ python -m pip install -r requirement.txt
 
 ## Virtualenvwrapper-making venv more convenient
 
+for linux and mac:
+```bash
+sudo pip install virtualenvwrapper
+which virtualenvwrapper.sh
+#this should be in the default folder
+#add this path in profile
+```
+edit the profile:
+![envwrapper](./images/env-2.png)
+
+```bash
+workon
+# will list the env
+workon env_name
+# will activate the env
+```
+for windows user:
+
+```powershell
+pip install virtualenvwrapper-win
+#no extra setup needed
+#Default location for envs: %USERPROFILE%\Envs
+```
+
 ## Other tools
