@@ -124,12 +124,14 @@ python -m pip install -r requirement.txt
 ## Virtualenvwrapper-making venv more convenient
 
 for linux and mac:
+
 ```bash
 sudo pip install virtualenvwrapper
 which virtualenvwrapper.sh
 #this should be in the default folder
 #add this path in profile
 ```
+
 edit the profile:
 ![envwrapper](./images/env-2.png)
 
@@ -139,6 +141,7 @@ workon
 workon env_name
 # will activate the env
 ```
+
 for windows user:
 
 ```powershell
@@ -152,7 +155,7 @@ pip install virtualenvwrapper-win
 * the Python packaging authority
   * here is the [link](Http://pypa.io)
 ![tools](./images/tools.png)
-* anaconda: http://www.anaconda.com
+* anaconda: [link](http://www.anaconda.com)
   * python distribution
   * package manager
   * instsaller
@@ -160,3 +163,6 @@ pip install virtualenvwrapper-win
   * aimed at Data Science
 
 ![tools](./images/tools-2.png)
+
+* pipenv (more popular)
+* poetry (better UI, supports packing)
