@@ -1,3 +1,13 @@
+# Content
+
+- [Content](#content)
+- [typing hint static typing in python](#typing-hint-static-typing-in-python)
+- [Static Typing in Python](#static-typing-in-python)
+  - [Why](#why)
+  - [applying typing hints in project](#applying-typing-hints-in-project)
+
+---
+
 # typing hint static typing in python
 
 in order to make the code give a better hint during the construction. you can use the build-in function like:

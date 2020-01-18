@@ -1,9 +1,13 @@
+# Content
+
+- [Content](#content)
 - [class attributes and instance attributes](#class-attributes-and-instance-attributes)
 - [static method: using the @staticmethod decorator](#static-method-using-the-staticmethod-decorator)
 - [class methods](#class-methods)
 - [properties](#properties)
 - [the difference between the @staticmethod and @classmethod](#the-difference-between-the-staticmethod-and-classmethod)
 
+---
 
 # class attributes and instance attributes
 

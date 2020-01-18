@@ -1,3 +1,18 @@
+# Content
+
+- [Content](#content)
+- [pip install packages](#pip-install-packages)
+  - [pip-package management](#pip-package-management)
+    - [Managing packages with pip](#managing-packages-with-pip)
+    - [where are packages installed](#where-are-packages-installed)
+    - [a better way to call pip](#a-better-way-to-call-pip)
+  - [Virtual environments-Projects and dependencies](#virtual-environments-projects-and-dependencies)
+    - [install the env](#install-the-env)
+    - [activate the env](#activate-the-env)
+    - [how to sync the package among the team](#how-to-sync-the-package-among-the-team)
+  - [Virtualenvwrapper-making venv more convenient](#virtualenvwrapper-making-venv-more-convenient)
+  - [Other tools](#other-tools)
+
 # pip install packages
 
 Overview in this chapter:

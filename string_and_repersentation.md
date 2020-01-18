@@ -1,3 +1,6 @@
+# content
+
+- [content](#content)
 - [two string representations](#two-string-representations)
   - [the built-in function repr()](#the-built-in-function-repr)
   - [the built-in function str()](#the-built-in-function-str)
@@ -6,6 +9,8 @@
   - [reprlib: the standard library module](#reprlib-the-standard-library-module)
   - [the built-in function ascii(), ord(), chr()](#the-built-in-function-ascii-ord-chr)
 - [Summary](#summary)
+
+
 # two string representations
 two functions can take strings:
 ```python
