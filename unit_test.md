@@ -4,6 +4,10 @@ Content
   - [Unit Test Vocabulary](#unit-test-vocabulary)
   - [Summary](#summary)
 - [Unit Testing Why and When](#unit-testing-why-and-when)
+  - [understand what to build](#understand-what-to-build)
+  - [document the unites](#document-the-unites)
+  - [design the units](#design-the-units)
+  - [regression protection](#regression-protection)
 - [Unit Testing with pytest](#unit-testing-with-pytest)
 - [Testable Documentation with doctest](#testable-documentation-with-doctest)
 - [Using Test Doubles](#using-test-doubles)
@@ -100,6 +104,7 @@ Check the **online document** [Unittest](https://docs.python.org/3/library/unitt
 |assertCountEqual(a, b)|a and b have the same elements in the same number, regardless of their order.|3.2|
 
 ## Summary
+
 vocabulary:
 * test case
 * teset runner
@@ -110,6 +115,32 @@ vocabulary:
     * arrange-Act-assert
   
 # Unit Testing Why and When
+
+what is Unit testing for?
+
+## understand what to build
+
+* business Analysis
+* tester
+* Designer
+* architect
+* end-user
+* etc
+
+## document the unites
+
+* specify behaviour of the unit under test
+* how the original developer indended the unit to be used.
+* excutable: keeps in sync with the unit under test
+
+## design the units
+
+![design_unites](./images/design_the&#32;_unites.png)
+follow the logic stream (for a better design!)
+
+## regression protection
+
+ensure previously developed and tested software still performs after a change
 
 # Unit Testing with pytest
 
