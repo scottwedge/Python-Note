@@ -135,14 +135,35 @@ what is Unit testing for?
 
 ## design the units
 
-![design_unites](./images/design_the&#32;_unites.png)
+![design_unites](.\images\design_the _unites.png)
 follow the logic stream (for a better design!)
 
 ## regression protection
 
 ensure previously developed and tested software still performs after a change
 
+uh...there is a lots of philosophy idea behind the regression protection
+
 # Unit Testing with pytest
+
+* Defining test cases with pytest
+* interpreting test failures
+* Test Fixtures
+* Organizing test code
+
+
+
+original unit testing like this:(not pythonic)
+
+![test_case_class](.\images\tast_case_class.png)
+
+
+
+that bring us the pytest: a popular alternative to unittest
+
+[pytest link](https://docs.pytest.org/en/latest/)
+
+the pytest could also added in the pycharm test Runner
 
 # Testable Documentation with doctest
 
