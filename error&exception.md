@@ -1,3 +1,19 @@
+# content
+
+- [content](#content)
+- [error and exception](#error-and-exception)
+  - [exception payloads](#exception-payloads)
+  - [defining a new exception](#defining-a-new-exception)
+  - [Chaining Exceptions](#chaining-exceptions)
+    - [implicit chaining exception](#implicit-chaining-exception)
+    - [explicit chaining exceptions](#explicit-chaining-exceptions)
+  - [Tracebacks](#tracebacks)
+  - [checking invariants with **Assertions**](#checking-invariants-with-assertions)
+    - [internal invariants](#internal-invariants)
+    - [class invariants](#class-invariants)
+    - [performance assertions](#performance-assertions)
+  - [Summary](#summary)
+
 # error and exception
 ## exception payloads
 the use of error message calling could be helpful for the debugging, for example:
