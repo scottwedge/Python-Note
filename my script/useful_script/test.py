@@ -15,24 +15,34 @@ import  PyPDF2
 import pandas
 import os
 
-g = os.walk(r"C:/Users/Novogene/Documents/GitHub/Python-Note/my script/useful_script/syllabi")
-for path, dir_list, file_list in g:
-    for file_name in file_list:
-        #print(os.path.join(path, file_name))
-        print(file_name)
-        
+  
 class PDF_TO_CSV(object):
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self):
+        self.file_list = []
         self.feature_dict = {}
-    def Open_pdf(self,filename):
-        
-    pdfFileobj = open('.\syllabi/13205.pdf', 'rb')
-    pdfReader = PyPDF2.PdfFileReader(pdfFileobj)
-    pdfReader.numPages
-    for pages in range(pdfReader.numPages):
-        print(pages)
-        pageObj = pdfReader.getPage(pages)
-        print(pageObj.extractText())
+        self.foldername = ""
+        self.cwd = ""
+    
+    def Read_filename(self, foldername: str) -> list:
+        self.cwd = os.getcwd()
+        self.foldername = foldername
+        try:
+            self.file_list = os.listdir(os.path.join(os.getcwd(), self.foldername))
+        except FileNotFoundError as e:
+            raise FileNotFoundError(
+                "the path" + str(path) + "you input can not be found, please correct it!")
+        return self.file_list
+    
+    def Open_pdf(self,filename: str):
+        pdfFileobj = open(os.path.join(self.cwd, self.foldername, filename), 'rb')
+        pdfReader = PyPDF2.PdfFileReader(pdfFileobj)
+        pdfReader.numPages
+        for pages in range(pdfReader.numPages):
+            print(pages)
+            pageObj = pdfReader.getPage(pages)
+            print(pageObj.extractText())
 
 
+# main script
+test = PDF_TO_CSV()
+filename_list = test.Read_filename("syllabi")
