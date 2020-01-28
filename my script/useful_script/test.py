@@ -11,10 +11,9 @@ extract the most features from the syllabi using regular expressions.
 4. create row in a pandas dataframe with all the features extracted 
 5. save a csv file called features-retrieved-by-JohnSmith.csv (all lower case) that has 100 rows,  each containing the features extracted.  Replace the JohnSmith with your name.
 '''
-import  PyPDF2
-import pandas
+import pandas as pd
 import os
-
+import re
 from pdfminer.converter import PDFPageAggregator
 from pdfminer.pdfparser import PDFParser
 from pdfminer.pdfdocument import PDFDocument
@@ -23,17 +22,14 @@ from pdfminer.pdfpage import PDFTextExtractionNotAllowed
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.layout import *
-import re
 
 
-  
 class PDF_TO_CSV(object):
     def __init__(self):
         self.file_list = []
         self.feature_dict = {}
         self.foldername = ""
         self.cwd = ""
-    
     def Read_filename(self, foldername: str) -> list:
         self.cwd = os.getcwd()
         self.foldername = foldername
@@ -41,49 +37,68 @@ class PDF_TO_CSV(object):
             self.file_list = os.listdir(os.path.join(os.getcwd(), self.foldername))
         except FileNotFoundError as e:
             raise FileNotFoundError(
-                "the path" + str(path) + "you input can not be found, please correct it!")
+                "the path" + str(self.foldername) + "you input can not be found, please correct it!")
         return self.file_list
-    
-    def Open_pdf(self,filename: str):
-        pdfFileobj = open(os.path.join(self.cwd, self.foldername, filename), 'rb')
-        pdfReader = PyPDF2.PdfFileReader(pdfFileobj)
-        pdfReader.numPages
-        for pages in range(pdfReader.numPages):
-            print(pages)
-            pageObj = pdfReader.getPage(pages)
-            print(pageObj.extractText())
-    
-    def Regular_exp_check(self):
+    def Search_feature(self,filename: str):
+        pdfFileobj = open(os.path.join(
+            self.cwd, self.foldername, filename), 'rb')  # 以二进制读模式打开
+        #用文件对象来创建一个pdf文档分析器
+        parser = PDFParser(pdfFileobj)
+        # 创建一个PDF文档
+        document = PDFDocument(parser)
+        # 创建PDf 资源管理器 来管理共享资源
+        rsrcmgr = PDFResourceManager(caching=False)
+        # 创建一个PDF设备对象
+        laparams = LAParams()
+        device = PDFPageAggregator(rsrcmgr, laparams=laparams)
+        # 创建一个PDF解释器对象
+        interpreter = PDFPageInterpreter(rsrcmgr, device)
+        #创建list
+        email_list = []
+        phone_list = []
+        name_list = []
+        # 定义读取text的正则
+        replace = re.compile(r'\s+')
+        email_mod = re.compile(r'(\w+(\.\w+)*@\w+(\.\w+)*)')
+        phone_mod = re.compile(r'((\d{3}[-\.\s]\d{3}[-\.\s]\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]\d{4}|\d{3}[-\.\s]\d{4}))')
+        name_regax = re.compile(r'(Professor:\s+|Instructor:\s+)(\w+.*)')
+        for page in PDFPage.create_pages(document):
+            interpreter.process_page(page)
+            # 接受该页面的LTPage对象
+            layout = device.get_result()
+            # 这里layout是一个LTPage对象 里面存放着 这个page解析出的各种对象
+            # 一般包括LTTextBox, LTFigure, LTImage, LTTextBoxHorizontal 等等
+            for x in layout:
+                #如果x是水平文本对象的话
+                if(isinstance(x, LTTextBoxHorizontal)):
+                    text = re.sub(replace, ' ', x.get_text())
+                    text = text.strip('\n')
+                    if len(text) != 0:
+                        try:
+                            email_list.append(email_mod.search(text).group(1))
+                        except:
+                            pass
+                        try:
+                            phone_list.append(phone_mod.search(text).group(1))
+                        except:
+                            pass
+                        try:
+                            name_list.append(name_regax.search(text).group(2))
+                        except:
+                            pass
+        return email_list, phone_list, name_list
 
+        
+    
 # main script
+test_list = []
 test = PDF_TO_CSV()
 filename_list = test.Read_filename("syllabi")
+#test.Search_feature("SPRING-2019-Biology-101-Syllabus_schedule.pdf")
+test_df = []
+for files in filename_list:
+    features = test.Search_feature(files)
+    test_list.append({"filename": files, "email": features[0], "phone": features[1], "name": features[2]})
+pd.DataFrame(test_list)
 
-fp = open(u"C:\\Users\\Novogene\\Documents\\GitHub\\Python-Note\\my script\\useful_script\\syllabi\\SPRING-2019-Biology-101-Syllabus_schedule.pdf", 'rb')
-parser = PDFParser(fp)
-document = PDFDocument(parser)
-rsrcmgr = PDFResourceManager(caching=False)
-laparams = LAParams()
-device = PDFPageAggregator(rsrcmgr, laparams=laparams)
-interpreter = PDFPageInterpreter(rsrcmgr, device)
 
-replace = re.compile(r'\s+')
-email_mod = re.compile(r'(\w+(\.\w+)*@\w+(\.\w+)*)')
-
-for page in PDFPage.create_pages(document):
-    interpreter.process_page(page)
-    # 接受该页面的LTPage对象
-    layout = device.get_result()
-    # 这里layout是一个LTPage对象 里面存放着 这个page解析出的各种对象
-    # 一般包括LTTextBox, LTFigure, LTImage, LTTextBoxHorizontal 等等
-    for x in layout:
-        #如果x是水平文本对象的话
-        if(isinstance(x, LTTextBoxHorizontal)):
-            email = email_mod.findall(x.get_text())
-            if len(email) != 0:
-                print(email[0][0])
-            #text = re.sub(replace, ' ', x.get_text())
-            #if len(text) != 0:
-            #    print(text)
-            #    print(email)
-#
