@@ -1,15 +1,7 @@
-'''Name of the Instructor 
-Email of the Instructor 
-Office Hours 
-Number of assignments or labs 
-
-extract the most features from the syllabi using regular expressions.
-
-1. There will be a folder called "syllabi" (all lower case). The folder will include 100 syllabi, all in PDF format. 
-2. for each syllabus in the "syllabi" folder, it will read its text (from the PDF) .
-3. extract the most features 
-4. create row in a pandas dataframe with all the features extracted 
-5. save a csv file called features-retrieved-by-JohnSmith.csv (all lower case) that has 100 rows,  each containing the features extracted.  Replace the JohnSmith with your name.
+'''
+class:ANLT-224
+author: Qingnan Zeng
+date:0125/2020
 '''
 import pandas as pd
 import os
@@ -38,7 +30,7 @@ class PDF_TO_CSV(object):
         except FileNotFoundError as e:
             raise FileNotFoundError(
                 "the path" + str(self.foldername) + "you input can not be found, please correct it!")
-        return self.file_list
+        #return self.file_list
     def Search_feature(self,filename: str):
         pdfFileobj = open(os.path.join(
             self.cwd, self.foldername, filename), 'rb')  # 以二进制读模式打开
@@ -57,11 +49,24 @@ class PDF_TO_CSV(object):
         email_list = []
         phone_list = []
         name_list = []
+        website_list = []
+        office_hour = []
+        ISBN_list = []
+        course_number = []
+        grading_policy = []
+        letter_grade = []
+        
         # 定义读取text的正则
         replace = re.compile(r'\s+')
         email_mod = re.compile(r'(\w+(\.\w+)*@\w+(\.\w+)*)')
         phone_mod = re.compile(r'((\d{3}[-\.\s]\d{3}[-\.\s]\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]\d{4}|\d{3}[-\.\s]\d{4}))')
-        name_regax = re.compile(r'(Professor:\s+|Instructor:\s+)(\w+.*)')
+        name_regax = re.compile(r'(Professor:\s+|Instructor:\s+)(\w+\s+){2,5}')
+        website_regax = re.compile(r'((http|ftp|https|www)://\S+)')
+        office_hour_regax = re.compile(r'(^office hours:\s.*\Z)', re.I)
+        ISBN_regax = re.compile(r'(ISBN.*(\d+\W+)+)')
+        gradeing_regax = re.compile(r'^Grading.*\n.*')
+        letter_grade_regax = re.compile(r'^A.*B.*C.*[^.]')
+        course_regax = re.compile(r'^[A-Z]+{3,5}\s+\d$')
         for page in PDFPage.create_pages(document):
             interpreter.process_page(page)
             # 接受该页面的LTPage对象
@@ -72,33 +77,60 @@ class PDF_TO_CSV(object):
                 #如果x是水平文本对象的话
                 if(isinstance(x, LTTextBoxHorizontal)):
                     text = re.sub(replace, ' ', x.get_text())
-                    text = text.strip('\n')
-                    if len(text) != 0:
-                        try:
-                            email_list.append(email_mod.search(text).group(1))
-                        except:
-                            pass
-                        try:
-                            phone_list.append(phone_mod.search(text).group(1))
-                        except:
-                            pass
-                        try:
-                            name_list.append(name_regax.search(text).group(2))
-                        except:
-                            pass
-        return email_list, phone_list, name_list
-
-        
+                    try:
+                        email_list.append(email_mod.search(text).group(1))
+                    except:
+                        pass
+                    try:
+                        phone_list.append(phone_mod.search(text).group(1))
+                    except:
+                        pass
+                    try:
+                        name_list.append(name_regax.search(text).group(2))
+                    except:
+                        pass
+                    try:
+                        website_list.append(website_regax.search(text).group(1))
+                    except:
+                        pass
+                    try:
+                        office_hour.append(office_hour_regax.search(text).group(1))
+                    except:
+                        pass   
+                    try:
+                        ISBN_list.append(ISBN_regax.search(text).group(1))
+                    except:
+                        pass
+                    try:
+                        course_number.append(course_regax.search(text).group(1))
+                    except:
+                        pass
+                    try:
+                        grading_policy.append(gradeing_regax.search(text).group(1))
+                    except:
+                        pass
+                    try:
+                        letter_grade.append(letter_grade_regax.search(text).group(1))
+                    except:
+                        pass
+                        
+        return email_list, phone_list, name_list, website_list, office_hour, ISBN_list, course_number, grading_policy, letter_grade
+    def data_frame(self):
+        df = []
+        for files in self.file_list:
+            features = self.Search_feature(files)
+            df.append({"filename": files, "email": features[0], "phone": features[1], "name": features[2],"url": features[3], "Office hours": features[4], "ISBN_code": features[5], "course_code": features[6], "grading_policy": features[7], "Grade_level": features[8]})
+        self.output_df = pd.DataFrame(df)
+            
     
 # main script
-test_list = []
-test = PDF_TO_CSV()
-filename_list = test.Read_filename("syllabi")
-#test.Search_feature("SPRING-2019-Biology-101-Syllabus_schedule.pdf")
-test_df = []
-for files in filename_list:
-    features = test.Search_feature(files)
-    test_list.append({"filename": files, "email": features[0], "phone": features[1], "name": features[2]})
-pd.DataFrame(test_list)
+if __name__ == "__main__":
+    test = PDF_TO_CSV()
+    test.Read_filename("syllabi")
+    test.data_frame()
+    test.output_df.to_csv("features-retrieved-by-QingnanZeng.csv")
+
+
+
 
 
