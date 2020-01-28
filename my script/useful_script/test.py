@@ -15,6 +15,17 @@ import  PyPDF2
 import pandas
 import os
 
+from pdfminer.converter import PDFPageAggregator
+from pdfminer.pdfparser import PDFParser
+from pdfminer.pdfdocument import PDFDocument
+from pdfminer.pdfpage import PDFPage
+from pdfminer.pdfpage import PDFTextExtractionNotAllowed
+from pdfminer.pdfinterp import PDFResourceManager
+from pdfminer.pdfinterp import PDFPageInterpreter
+from pdfminer.layout import *
+import re
+
+
   
 class PDF_TO_CSV(object):
     def __init__(self):
@@ -41,8 +52,38 @@ class PDF_TO_CSV(object):
             print(pages)
             pageObj = pdfReader.getPage(pages)
             print(pageObj.extractText())
-
+    
+    def Regular_exp_check(self):
 
 # main script
 test = PDF_TO_CSV()
 filename_list = test.Read_filename("syllabi")
+
+fp = open(u"C:\\Users\\Novogene\\Documents\\GitHub\\Python-Note\\my script\\useful_script\\syllabi\\SPRING-2019-Biology-101-Syllabus_schedule.pdf", 'rb')
+parser = PDFParser(fp)
+document = PDFDocument(parser)
+rsrcmgr = PDFResourceManager(caching=False)
+laparams = LAParams()
+device = PDFPageAggregator(rsrcmgr, laparams=laparams)
+interpreter = PDFPageInterpreter(rsrcmgr, device)
+
+replace = re.compile(r'\s+')
+email_mod = re.compile(r'(\w+(\.\w+)*@\w+(\.\w+)*)')
+
+for page in PDFPage.create_pages(document):
+    interpreter.process_page(page)
+    # 接受该页面的LTPage对象
+    layout = device.get_result()
+    # 这里layout是一个LTPage对象 里面存放着 这个page解析出的各种对象
+    # 一般包括LTTextBox, LTFigure, LTImage, LTTextBoxHorizontal 等等
+    for x in layout:
+        #如果x是水平文本对象的话
+        if(isinstance(x, LTTextBoxHorizontal)):
+            email = email_mod.findall(x.get_text())
+            if len(email) != 0:
+                print(email[0][0])
+            #text = re.sub(replace, ' ', x.get_text())
+            #if len(text) != 0:
+            #    print(text)
+            #    print(email)
+#
