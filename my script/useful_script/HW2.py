@@ -66,7 +66,7 @@ class PDF_TO_CSV(object):
         ISBN_regax = re.compile(r'(ISBN.*(\d+\W+)+)')
         gradeing_regax = re.compile(r'^Grading.*\n.*')
         letter_grade_regax = re.compile(r'^A.*B.*C.*[^.]')
-        course_regax = re.compile(r'^[A-Z]+{3,5}\s+\d$')
+        course_regax = re.compile(r'(^[a-zA-Z]{3,10}[" "]\d{3,5}[" "]?[a-zA-Z]{0,1}$)')
         for page in PDFPage.create_pages(document):
             interpreter.process_page(page)
             # 接受该页面的LTPage对象
@@ -121,16 +121,10 @@ class PDF_TO_CSV(object):
             features = self.Search_feature(files)
             df.append({"filename": files, "email": features[0], "phone": features[1], "name": features[2],"url": features[3], "Office hours": features[4], "ISBN_code": features[5], "course_code": features[6], "grading_policy": features[7], "Grade_level": features[8]})
         self.output_df = pd.DataFrame(df)
+        self.output_df.to_csv("features-retrieved-by-QingnanZeng.csv")
             
-    
 # main script
 if __name__ == "__main__":
     test = PDF_TO_CSV()
     test.Read_filename("syllabi")
     test.data_frame()
-    test.output_df.to_csv("features-retrieved-by-QingnanZeng.csv")
-
-
-
-
-
