@@ -159,11 +159,35 @@ original unit testing like this:(not pythonic)
 
 
 
-that bring us the pytest: a popular alternative to unittest
+that bring us the **pytest:** a popular alternative to unittest
 
 [pytest link](https://docs.pytest.org/en/latest/)
 
 the pytest could also added in the pycharm test Runner
+
+the pytest fixtures will call the porperty of pytest.fixture:
+
+```python
+@pytest.fixture
+def resource():
+    return Resource()
+```
+
+add those code at the front of the test then call it on every test case:D
+
+
+
+**useful Pytest Plugins**
+
+* pytest-html: can creat HTML report for you
+
+  ```powershell
+  pip install pytest-html
+  ```
+
+  
+
+
 
 # Testable Documentation with doctest
 
