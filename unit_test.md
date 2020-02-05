@@ -187,9 +187,60 @@ add those code at the front of the test then call it on every test case:D
 
   
 
-
-
 # Testable Documentation with doctest
+
+what is the doctest?
+
+handling output that changes
+
+using **doctest** for regression testing
+
+![doctest](C:\Users\Jerry\Documents\GitHub\Python-Note\images\doctest.png)
+
+the **doctest** can help  to keep the sample update to date.
+
+1. understand what to build
+2. **Document the units**
+3. Design the units
+4. **Regression protection**
+
+how to use it?
+
+just add the example in the docstring:
+
+```python
+def Test():
+    '''
+    this module will print Hello
+    >>> test()
+    "Hello"
+    '''
+    print("Hello")
+```
+
+then using the doctest to run it:
+
+```python
+python -m doctest --doctest-modules test.py
+```
+
+![doctest2](C:\Users\Jerry\Documents\GitHub\Python-Note\images\doctest2.png)
+
+
+
+How to match varying output?
+
+using:
+
+```python
+#doctest:+ELLIPSIS
+```
+
+![doctest3](C:\Users\Jerry\Documents\GitHub\Python-Note\images\doctest3.png)
+
+Check this out!!
+
+[doctest official link](https://docs.python.org/3/library/doctest.html)
 
 # Using Test Doubles
 
