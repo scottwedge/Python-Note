@@ -53,20 +53,24 @@ class PDF_TO_CSV(object):
         office_hour = []
         ISBN_list = []
         course_number = []
-        grading_policy = []
+        date_list = []
         letter_grade = []
         
         # 定义读取text的正则
         replace = re.compile(r'\s+')
         email_mod = re.compile(r'(\w+(\.\w+)*@\w+(\.\w+)*)')
         phone_mod = re.compile(r'((\d{3}[-\.\s]\d{3}[-\.\s]\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]\d{4}|\d{3}[-\.\s]\d{4}))')
-        name_regax = re.compile(r'(Professor:\s+|Instructor:\s+)(\w+\s+){2,5}')
+        name_regax = re.compile(r'((Professor:\s+|Instructor:*\s*)(\w+\s+|\w+\.){2,5})', re.I)
         website_regax = re.compile(r'((http|ftp|https|www)://\S+)')
-        office_hour_regax = re.compile(r'(^office hours:\s.*\Z)', re.I)
-        ISBN_regax = re.compile(r'(ISBN.*(\d+\W+)+)')
-        gradeing_regax = re.compile(r'^Grading.*\n.*')
-        letter_grade_regax = re.compile(r'^A.*B.*C.*[^.]')
+        office_hour_regax = re.compile(r'(\d{2}:\d{2})')
+        ISBN_regax = re.compile(r'(ISBN.*(\d+-*|\d+)+)')
+        date_regax = re.compile(r'(^\d{1,2}(/|-)\d{1,2})')
+        letter_grade_regax = re.compile(r'(^[A-F]|[A-F]\W)')
         course_regax = re.compile(r'(^[a-zA-Z]{3,10}[" "]\d{3,5}[" "]?[a-zA-Z]{0,1}$)')
+        regax_list = {
+            email_mod:email_list, phone_mod:phone_list, website_regax:website_list, office_hour_regax:office_hour,
+            ISBN_regax:ISBN_list, date_regax:date_list, letter_grade_regax:letter_grade, course_regax:course_number
+        }
         for page in PDFPage.create_pages(document):
             interpreter.process_page(page)
             # 接受该页面的LTPage对象
@@ -76,50 +80,28 @@ class PDF_TO_CSV(object):
             for x in layout:
                 #如果x是水平文本对象的话
                 if(isinstance(x, LTTextBoxHorizontal)):
+                    #替换所有
                     text = re.sub(replace, ' ', x.get_text())
                     try:
-                        email_list.append(email_mod.search(text).group(1))
+                        name_list.append(name_regax.search(text).group(3))
                     except:
                         pass
-                    try:
-                        phone_list.append(phone_mod.search(text).group(1))
-                    except:
-                        pass
-                    try:
-                        name_list.append(name_regax.search(text).group(2))
-                    except:
-                        pass
-                    try:
-                        website_list.append(website_regax.search(text).group(1))
-                    except:
-                        pass
-                    try:
-                        office_hour.append(office_hour_regax.search(text).group(1))
-                    except:
-                        pass   
-                    try:
-                        ISBN_list.append(ISBN_regax.search(text).group(1))
-                    except:
-                        pass
-                    try:
-                        course_number.append(course_regax.search(text).group(1))
-                    except:
-                        pass
-                    try:
-                        grading_policy.append(gradeing_regax.search(text).group(1))
-                    except:
-                        pass
-                    try:
-                        letter_grade.append(letter_grade_regax.search(text).group(1))
-                    except:
-                        pass
-                        
-        return email_list, phone_list, name_list, website_list, office_hour, ISBN_list, course_number, grading_policy, letter_grade
+                    for keys in regax_list:
+                        try:
+                            regax_list[keys].append(keys.search(text).group(1))
+                        except:
+                            pass
+            #得出的结果去重复
+            name_list = list(filter(lambda x:name_list.count(x) == 1, name_list))
+            for key in regax_list:
+                regax_list[key] = list(filter(lambda x:regax_list[key].count(x) == 1, regax_list[key]))
+
+        return email_list, phone_list, name_list, website_list, office_hour, ISBN_list, course_number, date_list, letter_grade
     def data_frame(self):
         df = []
         for files in self.file_list:
             features = self.Search_feature(files)
-            df.append({"filename": files, "email": features[0], "phone": features[1], "name": features[2],"url": features[3], "Office hours": features[4], "ISBN_code": features[5], "course_code": features[6], "grading_policy": features[7], "Grade_level": features[8]})
+            df.append({"filename": files, "email": features[0], "phone": features[1], "Professor_name": features[2],"url": features[3], "Office hours": features[4], "ISBN_code": features[5], "course_code": features[6], "Date": features[7], "Grade_level": features[8]})
         self.output_df = pd.DataFrame(df)
         self.output_df.to_csv("features-retrieved-by-QingnanZeng.csv")
             
