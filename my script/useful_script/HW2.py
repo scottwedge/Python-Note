@@ -127,4 +127,4 @@ class PDF_TO_CSV(object):
 if __name__ == "__main__":
     test = PDF_TO_CSV()
     test.Read_filename("syllabi")
-    test.data_frame()
+    test.data_frame() 
