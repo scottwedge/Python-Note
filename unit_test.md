@@ -11,6 +11,12 @@ Content
 - [Unit Testing with pytest](#unit-testing-with-pytest)
 - [Testable Documentation with doctest](#testable-documentation-with-doctest)
 - [Using Test Doubles](#using-test-doubles)
+  - [Stub module](#stub-module)
+  - [Fake module](#fake-module)
+  - [Dummies](#dummies)
+  - [Mocks an Spies module](#mocks-an-spies-module)
+  - [Monkey Patching](#monkey-patching)
+  - [Summary](#summary-1)
 - [Parameterized Tests & Test Coverage](#parameterized-tests--test-coverage)
 
 
@@ -244,4 +250,68 @@ Check this out!!
 
 # Using Test Doubles
 
+## Stub module
+
+the Stub framework in the unitest, it looks good from the outside, while it contains nothing except what you put there.
+
+## Fake module
+
+the Fake modle looks good from out side but it has an implementation with logic and behaviour.   
+
+## Dummies
+
+it doesn't matter what it looks like, and it usually None
+
+## Mocks an Spies module
+
+the stub will not fail the test but the Mock or Spy can fail the test if it's not called correctly(it will make assertion).
+
+Three kinds of assertion: **return_value, State change, Method call**
+
+The **mock** expect certain method calls, otherwise raise an error
+
+![test doubles](images/doubles%20test.png)
+
+## Monkey Patching
+
+```python
+
+from unittest.mock import patch
+
+## two way to achaive the monkey patch
+
+## first method using with
+def test_alarm_with_high_pressure_value():
+    with patch('alarm.Sensor') as test_sensor_class:
+        test_sensor_instance = Mock()
+        test_sensor_instance.sample_pressure.return_value = 22
+        test_sensor_class.return_value = test_sensor_instance
+
+        alarm = Alarm()
+        alarm.check()
+
+        assert alarm.is_alarm_on
+
+## second method using decorator
+@patch('alarm.Sensor')
+def test_alarm_with_high_pressure_value(test_sensor_class):
+    with patch('alarm.Sensor') as test_sensor_class:
+        test_sensor_instance = Mock()
+        test_sensor_instance.sample_pressure.return_value = 22
+        test_sensor_class.return_value = test_sensor_instance
+
+        alarm = Alarm()
+        alarm.check()
+```
+
+The monkey used when it's hard to insert a testing module or replce a module with testing.
+
+please reach to the reference:
+
+[unittest.mock](https://docs.python.org/3/library/unittest.mock.html)
+
+## Summary
+1. What is a test double?
+2. Why use a Test Doulbe?
+3. Inject Test Doubles using Monkeypatching
 # Parameterized Tests & Test Coverage
