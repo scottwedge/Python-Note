@@ -31,77 +31,95 @@ class PDF_TO_CSV(object):
             raise FileNotFoundError(
                 "the path" + str(self.foldername) + "you input can not be found, please correct it!")
         #return self.file_list
+    @classmethod
+    def search_result_correct(self, search_mod, text, group_num:int):
+        try:
+            x = search_mod.search(text).group(group_num)
+            return x
+        except AttributeError as e:
+            return ''
+
     def Search_feature(self,filename: str):
         pdfFileobj = open(os.path.join(
-            self.cwd, self.foldername, filename), 'rb')  # 以二进制读模式打开
-        #用文件对象来创建一个pdf文档分析器
+            self.cwd, self.foldername, filename), 'rb')
+        #create PDF interpreter based on file
         parser = PDFParser(pdfFileobj)
-        # 创建一个PDF文档
+        # create PDF document
         document = PDFDocument(parser)
-        # 创建PDf 资源管理器 来管理共享资源
+        # create PDF resourceManager
         rsrcmgr = PDFResourceManager(caching=False)
-        # 创建一个PDF设备对象
+        # create PDF device
         laparams = LAParams()
         device = PDFPageAggregator(rsrcmgr, laparams=laparams)
-        # 创建一个PDF解释器对象
+        # create interpreter
         interpreter = PDFPageInterpreter(rsrcmgr, device)
-        #创建list
-        email_list = []
-        phone_list = []
-        name_list = []
-        website_list = []
-        office_hour = []
-        ISBN_list = []
-        course_number = []
-        date_list = []
-        letter_grade = []
+        #create empty list
+        self.email_list = []
+        self.phone_list = []
+        self.name_list = []
+        self.website_list = []
+        self.office_hour = []
+        self.time_list = []
+        self.course_number = []
+        self.date_list = []
+        self.letter_grade = []
         
-        # 定义读取text的正则
+        # set up the regax
         replace = re.compile(r'\s+')
         email_mod = re.compile(r'(\w+(\.\w+)*@\w+(\.\w+)*)')
         phone_mod = re.compile(r'((\d{3}[-\.\s]\d{3}[-\.\s]\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]\d{4}|\d{3}[-\.\s]\d{4}))')
-        name_regax = re.compile(r'((Professor:\s+|Instructor:*\s*)(\w+\s+|\w+\.){2,5})', re.I)
+        name_regax = re.compile(r'((Professor:|Professor|Instructor:|Instructor\(s\):|Names:|Instructor.s Name)\s+(([A-Z]\w+\s+){0,2}))')
         website_regax = re.compile(r'((http|ftp|https|www)://\S+)')
-        office_hour_regax = re.compile(r'(\d{2}:\d{2})')
-        ISBN_regax = re.compile(r'(ISBN.*(\d+-*|\d+)+)')
-        date_regax = re.compile(r'(^\d{1,2}(/|-)\d{1,2})')
+        office_hour_regax = re.compile(r'([M,m]on|[T,t]ue|[W,w]ed|[T,t]hu|[F,f]ri)')
+        time_regax = re.compile(r'\d+:\d+\W+\d+:\d+')
+        date_regax = re.compile(r'(\d{1,2}/\d{1,2})')
         letter_grade_regax = re.compile(r'(^[A-F]|[A-F]\W)')
-        course_regax = re.compile(r'(^[a-zA-Z]{3,10}[" "]\d{3,5}[" "]?[a-zA-Z]{0,1}$)')
-        regax_list = {
-            email_mod:email_list, phone_mod:phone_list, website_regax:website_list, office_hour_regax:office_hour,
-            ISBN_regax:ISBN_list, date_regax:date_list, letter_grade_regax:letter_grade, course_regax:course_number
-        }
+        course_regax = re.compile(r'(([A-Z]\w+\s+)+University|University of ([A-Z]\w+\s+)+)')
+
         for page in PDFPage.create_pages(document):
             interpreter.process_page(page)
-            # 接受该页面的LTPage对象
-            layout = device.get_result()
-            # 这里layout是一个LTPage对象 里面存放着 这个page解析出的各种对象
-            # 一般包括LTTextBox, LTFigure, LTImage, LTTextBoxHorizontal 等等
-            for x in layout:
-                #如果x是水平文本对象的话
+            # get the result and PDF
+            self.layout = device.get_result()
+            # layout including LTTextBox, LTFigure, LTImage, LTTextBoxHorizontal and etc
+            str_text = ''
+            for x in self.layout:
+                # only check the horizontal box
                 if(isinstance(x, LTTextBoxHorizontal)):
-                    #替换所有
+                    #subsitute all blank and \r and \n
                     text = re.sub(replace, ' ', x.get_text())
-                    try:
-                        name_list.append(name_regax.search(text).group(3))
-                    except:
-                        pass
-                    for keys in regax_list:
-                        try:
-                            regax_list[keys].append(keys.search(text).group(1))
-                        except:
-                            pass
-            #得出的结果去重复
-            name_list = list(filter(lambda x:name_list.count(x) == 1, name_list))
-            for key in regax_list:
-                regax_list[key] = list(filter(lambda x:regax_list[key].count(x) == 1, regax_list[key]))
+                    str_text += text
+            # print(str_text)
+            self.email_list.append(PDF_TO_CSV.search_result_correct(email_mod, str_text, 0))
+            self.phone_list.append(PDF_TO_CSV.search_result_correct(phone_mod, str_text, 0))
+            self.name_list.append(PDF_TO_CSV.search_result_correct(name_regax, str_text, 3))
+            self.website_list.append(PDF_TO_CSV.search_result_correct(website_regax, str_text, 0))
+            self.office_hour.append(office_hour_regax.findall(str_text))
+            self.time_list.append(time_regax.findall((str_text)))
+            self.course_number.append(PDF_TO_CSV.search_result_correct(course_regax, str_text, 0))
+            self.date_list.append((date_regax.findall(str_text)))
+            self.letter_grade.append(letter_grade_regax.findall(str_text))
 
-        return email_list, phone_list, name_list, website_list, office_hour, ISBN_list, course_number, date_list, letter_grade
+            #delete the repeat value
+            self.email_list =[x for x in self.email_list if x != '']
+            self.phone_list = [x for x in self.phone_list if x != '']
+            self.name_list = [x for x in self.name_list if x != '']
+            self.website_list = [x for x in self.website_list if x != '']
+            self.office_hour = [x for x in self.office_hour if (x != '' and x != [])]
+            self.time_list = [x for x in self.time_list if (x != '' and x != [])]
+            self.course_number = [x for x in self.course_number if (x != '' and x != [])]
+            self.date_list = [x for x in self.date_list if (x != '' and x != [])]
+            self.letter_grade = [x for x in self.letter_grade if (x != '' and x != [])]
+
+        return self.email_list, self.phone_list, self.name_list, self.website_list, self.office_hour, self.time_list, self.course_number, self.date_list, self.letter_grade
     def data_frame(self):
         df = []
         for files in self.file_list:
-            features = self.Search_feature(files)
-            df.append({"filename": files, "email": features[0], "phone": features[1], "Professor_name": features[2],"url": features[3], "Office hours": features[4], "ISBN_code": features[5], "course_code": features[6], "Date": features[7], "Grade_level": features[8]})
+            if re.search(r'.*.pdf$', files):
+                try:
+                    features = self.Search_feature(files)
+                except TypeError as e:
+                    pass
+            df.append({"filename": files, "email": features[0], "phone": features[1], "Professor_name": features[2],"url": features[3], "Office hours": features[4], "Time_period": features[5], "University": features[6], "Date": features[7], "Grade_level": features[8]})
         self.output_df = pd.DataFrame(df)
         self.output_df.to_csv("features-retrieved-by-QingnanZeng.csv")
             
