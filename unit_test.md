@@ -18,6 +18,8 @@ Content
   - [Monkey Patching](#monkey-patching)
   - [Summary](#summary-1)
 - [Parameterized Tests & Test Coverage](#parameterized-tests--test-coverage)
+  - [parameterized testing](#parameterized-testing)
+  - [Test coverage](#test-coverage)
 
 
 # unit testing fundamental
@@ -314,4 +316,28 @@ please reach to the reference:
 1. What is a test double?
 2. Why use a Test Doulbe?
 3. Inject Test Doubles using Monkeypatching
+
 # Parameterized Tests & Test Coverage
+
+## parameterized testing
+1.what is the Parameterised testing?
+it is some function or method that can take different parameters and give more testing coverage.
+
+```python
+#the parameterised testing can be introduced using pytest derector
+@pytest.mark.parametrize("function1, function2, function3, [value1, value2, value3]")
+
+#using with and unittest to introduce the parameters
+with self.subTest(f"{value1}, {value2} -> {expected_result}"):
+    self.assertEqual(......)
+
+```
+## Test coverage
+
+![test coverage](images/test-coverage.png)
+
+two packages need to be installed:(using pip)
+1. coverage
+2. pytest-cov
+
+trying to use the branch coverage when it come with the contional testing (if...else...)
