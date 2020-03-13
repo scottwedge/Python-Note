@@ -63,7 +63,7 @@ class PhoneBookTest(unittest.TestCase):
     def test_lookup_by_name(self):
         self.phonebook.add("Bob", "12345")
         number = self.phonebook.lookup("Bob")
-        self.asertEqual("12345", number)
+        self.assertEqual("12345", number)
     
     def test_missing_name(self):
         with self.assertRaises(KeyError):
